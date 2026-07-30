@@ -446,7 +446,9 @@ p { margin: 0; }
   margin-bottom: 1.6rem;
 }
 
-/* The h1 is the business name, set at eyebrow scale above the tagline */
+/* The h1 is the business name plus what and where, set at eyebrow scale above
+   the tagline. It carries the page's only topical heading text, so it earns the
+   length; 1.4 is here because it wraps to two lines on narrow screens. */
 .hero h1.eyebrow {
   line-height: 1.4;
   margin-bottom: 1rem;

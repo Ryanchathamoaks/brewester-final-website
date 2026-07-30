@@ -1,0 +1,13 @@
+# Cloudflare Pages redirects
+#
+# Canonicalisation. Every canonical, og:url and sitemap entry on this site points
+# at the www host over https, so the apex must 301 there or Google sees two hosts
+# serving identical pages and has to pick one itself.
+#
+# NOTE: this file only runs for requests that actually reach the Pages project,
+# so it is the belt, not the braces. The braces are a zone-level Redirect Rule —
+# see DEPLOY.md. Attach ONLY www.peacemakerbrewster.com as the Pages custom
+# domain and let the rule handle the apex.
+
+https://peacemakerbrewster.com/* https://www.peacemakerbrewster.com/:splat 301!
+http://peacemakerbrewster.com/*  https://www.peacemakerbrewster.com/:splat 301!

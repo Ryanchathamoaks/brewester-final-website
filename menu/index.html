@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Menu · The Peacemaker · Brewster, Cape Cod</title>
-<meta name="description" content="The full Peacemaker menu: breakfast sandwiches, plates and sides, pancakes, subs, clubs, salads, wraps, simple simons and quesadillas. 2149 Main St, Brewster, MA.">
+<title>Menu: Breakfast Sandwiches &amp; Subs | The Peacemaker, Brewster</title>
+<meta name="description" content="The full Peacemaker menu: breakfast sandwiches, subs, clubs, salads, wraps, quesadillas and pancakes. 2149 Main St, Brewster, MA. Open daily 7am–2pm.">
 <link rel="canonical" href="https://www.peacemakerbrewster.com/menu/">
 <meta name="theme-color" content="#16294D">
 <link rel="icon" href="../favicon.ico" sizes="any">
@@ -30,6 +30,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600&family=DM+Mono:wght@400;500&family=Shrikhand&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/css/style.css">
+<!-- The business node below is repeated from the homepage on purpose. Google
+     evaluates each URL's structured data on its own, so an @id pointing at a
+     node defined on another page is a dangling reference. Its hasMenu also
+     attaches this page's Menu to the establishment that serves it, which is
+     what Google's menu markup expects. Keep the two copies in step. -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -582,6 +587,58 @@
             }
           ]
         }
+      ]
+    },
+    {
+      "@type": "CafeOrCoffeeShop",
+      "@id": "https://www.peacemakerbrewster.com/#business",
+      "name": "The Peacemaker",
+      "url": "https://www.peacemakerbrewster.com/",
+      "telephone": "+1-774-323-0529",
+      "priceRange": "$",
+      "servesCuisine": [
+        "Sandwiches",
+        "Breakfast",
+        "Coffee"
+      ],
+      "image": [
+        "https://www.peacemakerbrewster.com/assets/img/storefront.webp"
+      ],
+      "hasMenu": {
+        "@id": "https://www.peacemakerbrewster.com/menu/#menu"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "2149 Main St",
+        "addressLocality": "Brewster",
+        "addressRegion": "MA",
+        "postalCode": "02631",
+        "addressCountry": "US"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 41.7640792,
+        "longitude": -70.0759229
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+          ],
+          "opens": "07:00",
+          "closes": "14:00"
+        }
+      ],
+      "sameAs": [
+        "https://www.instagram.com/peacemakerbrewster/",
+        "https://www.google.com/maps?cid=10643129443793307910"
       ]
     },
     {

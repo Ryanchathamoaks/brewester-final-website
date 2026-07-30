@@ -1,0 +1,13 @@
+# Normalise to LF in the repository.
+* text=auto
+
+# Cloudflare Pages parses these line by line. Pin them to LF so a Windows
+# checkout cannot hand a direct `wrangler pages deploy` a CRLF copy.
+_headers  text eol=lf
+_redirects text eol=lf
+
+# Binary assets: never touch these.
+*.webp binary
+*.jpg  binary
+*.png  binary
+*.ico  binary

@@ -1,0 +1,23 @@
+# Cloudflare Pages response headers
+
+# Images are stable: if one is ever recut it gets a new name, so a long
+# immutable cache is safe here.
+/assets/img/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# CSS and JS deliberately get a SHORT cache. The filenames carry no content
+# hash, so a year-long immutable cache would strand returning visitors on stale
+# styles after any edit. Raise this only if the filenames start cache-busting
+# (style.css?v=2 or style.abc123.css).
+/assets/css/*
+  Cache-Control: public, max-age=86400, must-revalidate
+
+/assets/js/*
+  Cache-Control: public, max-age=86400, must-revalidate
+
+# HTML must revalidate every time so menu and price changes go live at once.
+/*
+  Cache-Control: public, max-age=0, must-revalidate
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
