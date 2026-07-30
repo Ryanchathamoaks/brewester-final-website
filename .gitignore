@@ -7,6 +7,7 @@ Thumbs.db
 # publicly downloadable and would ship the whole site inside itself.
 *.zip
 
-# A hand-made duplicate of this tree. Committing it would serve the site a
-# second time at /Cloudflare site/ and split every canonical.
-Cloudflare site/
+# A hand-made duplicate of this tree (renamed at least once already, hence the
+# glob rather than an exact match). Committing it would serve the site a second
+# time at its own path and split every canonical.
+Cloudflare site*/

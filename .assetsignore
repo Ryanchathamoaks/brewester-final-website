@@ -1,0 +1,26 @@
+# Tells `wrangler deploy` (Workers static assets) what NOT to upload as a
+# public file. Unlike classic Cloudflare Pages, this deploy path does not
+# auto-exclude .git — without this file the previous build uploaded 127 files
+# instead of 43, including .git/config and .git/logs/HEAD, which would have
+# been publicly fetchable at /.git/... on every push. Gitignore syntax.
+
+.git
+.github
+.wrangler
+node_modules
+
+# Local tool state and repo-only config — irrelevant to visitors either way.
+.claude
+.gitignore
+.gitattributes
+.assetsignore
+
+# Internal deploy notes. Not secret, but no reason to publish DNS/redirect
+# setup notes at /DEPLOY.md.
+DEPLOY.md
+
+# Local build artefacts and a hand-made duplicate of this same site. Both are
+# stale copies; shipping either would serve the site a second time at its own
+# path and split every canonical.
+*.zip
+Cloudflare site*/

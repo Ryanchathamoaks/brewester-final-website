@@ -1,6 +1,20 @@
-# Launch checklist — Cloudflare Pages
+# Launch checklist — Cloudflare
 
-The whole site is static. No build command, no build output directory.
+The whole site is static: no build command, no build output directory.
+
+**Deploy engine, corrected:** connecting the GitHub repo did not create a
+classic "Pages" project — Cloudflare's git integration detected a static site
+and deploys it as a **Worker with static assets**, via `npx wrangler deploy`.
+That engine has two consequences this checklist accounts for:
+
+- Its `_redirects` parser only accepts relative paths and plain integer status
+  codes (200/301/302/303/307/308) — no host-to-host rules, no Pages-style `!`
+  force suffix. `_redirects` in this repo is now deliberately empty of rules;
+  see the comment in that file.
+- It does **not** auto-exclude `.git`, `.wrangler`, etc. from the asset upload
+  the way classic Pages does. `.assetsignore` (gitignore syntax) handles that —
+  without it, the upload log will show `.git/config` and similar going out as
+  public files, which is a real information-disclosure risk, not a cosmetic one.
 
 ## 1. Host canonicalisation (do this first)
 
@@ -8,17 +22,20 @@ Every `<link rel="canonical">`, `og:url` and `sitemap.xml` entry points at
 **`https://www.peacemakerbrewster.com`**. The served host has to match, or Google
 sees two hosts serving identical pages and picks a canonical itself.
 
-1. **Pages → Custom domains:** add **only** `www.peacemakerbrewster.com`.
-   Do not add the apex as a second custom domain — that would serve the site on
-   both hosts and create the exact duplication we are avoiding.
+1. **Workers & Pages → (this Worker) → Settings → Domains & Routes → Add
+   Custom Domain:** add **only** `www.peacemakerbrewster.com`. Adding a Custom
+   Domain here provisions its DNS record automatically — no manual CNAME needed.
+   Do not also add the apex here — that would serve the site on both hosts and
+   create the exact duplication we are avoiding.
 
-2. **DNS:**
-   - `CNAME  www  <project>.pages.dev`  — proxied (orange cloud)
-   - `A      @    192.0.2.1`            — proxied (orange cloud)
+2. The apex (`peacemakerbrewster.com`, no `www`) needs to resolve *through*
+   Cloudflare's proxy for the redirect rule below to fire at all, but nothing
+   should serve content from it directly. Add one DNS record for it:
+   - `A  @  192.0.2.1` — proxied (orange cloud)
 
-   That apex A record is a placeholder from the reserved range in RFC 5737.
-   Nothing listens on it; it exists so the apex resolves *through* Cloudflare,
-   which is what lets the redirect rule below fire without an origin server.
+   That address is a placeholder from the reserved range in RFC 5737. Nothing
+   listens on it; the redirect rule intercepts every request to this host
+   before it would ever reach that non-existent origin.
 
 3. **Rules → Redirect Rules → Create:**
    - If: `hostname equals peacemakerbrewster.com`
@@ -26,10 +43,6 @@ sees two hosts serving identical pages and picks a canonical itself.
      expression: `concat("https://www.peacemakerbrewster.com", http.request.uri.path)`
 
 4. **SSL/TLS:** encryption mode **Full (strict)**, and **Always Use HTTPS** on.
-
-`_redirects` in this repo covers the same apex→www hop, but it only runs for
-requests that already reached the Pages project. The rule above is the one that
-does the real work; treat `_redirects` as the fallback.
 
 ### Verify before announcing
 
@@ -65,6 +78,11 @@ Local ranking is won here far more than on this site.
 
 ## Notes
 
+- **Check that `404.html` actually serves on a bad URL** (e.g.
+  `/this-does-not-exist`) once deployed, and that it returns HTTP 404, not 200.
+  Classic Pages auto-detects a root `404.html`; this Worker-assets engine may
+  need it declared explicitly via `not_found_handling: "404-page"` in a
+  `wrangler.jsonc` if it doesn't pick it up on its own. Untested until live.
 - `.nojekyll` is a GitHub Pages artifact and a no-op here. Harmless; delete if
   you like.
 - `sitemap.xml` has hardcoded `lastmod` dates. Bump them when content changes —
