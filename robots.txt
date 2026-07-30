@@ -1,0 +1,10 @@
+# The Peacemaker - Brewster, Cape Cod
+# Everything here is public. Nothing to hide from crawlers.
+
+User-agent: *
+Allow: /
+
+# No admin, cart or search pages exist, so there is nothing to disallow.
+# Crawlers need the CSS, JS and images to render the page as a visitor sees it.
+
+Sitemap: https://www.peacemakerbrewster.com/sitemap.xml

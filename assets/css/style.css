@@ -1,0 +1,1411 @@
+/* The Peacemaker · Brewster, Cape Cod */
+
+:root {
+  --navy: #16294D;
+  --red: #C0202F;
+  --white: #FFFFFF;
+  --ink: #10131A;
+  --marigold: #E8A020;
+  --seaglass: #4E8C7E;
+  --grape: #6B4C8A;
+
+  --line: 3px solid var(--navy);
+  --hair: 1px solid rgba(22, 41, 77, 0.22);
+
+  --display: "Shrikhand", Georgia, serif;
+  --body: "Archivo", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --mono: "DM Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --gutter: clamp(1.25rem, 4vw, 4rem);
+  --stack: clamp(3.5rem, 8vw, 7rem);
+  --maxw: 1240px;
+
+  /* Width of the empty band outside the centred content box, one side. The
+     ornaments that sit beside a full-width column have only this to live in.
+     The 100% resolves at the point of use, against the .deco-host's own box —
+     not 100vw, which would overcount by the scrollbar and push the art onto
+     the column by those few pixels. */
+  --strip: calc((100% - var(--maxw)) / 2 + var(--gutter));
+
+  /* Ornament art, named once so a placement rule only has to say which piece
+     it wants. See "Decorative icon layer" below. */
+  --ic-sandwich:   url("../img/deco/peace-sandwich.webp");
+  --ic-flower:     url("../img/deco/peace-flower.webp");
+  --ic-cape-sun:   url("../img/deco/cape-sun.webp");
+  --ic-llama:      url("../img/deco/llama.webp");
+  --ic-spark-navy: url("../img/deco/sparkles-navy.webp");
+  --ic-peace:      url("../img/deco/peace-sign.webp");
+  --ic-sunburst:   url("../img/deco/sunburst.webp");
+  --ic-flowers:    url("../img/deco/wildflowers.webp");
+  --ic-sparkles:   url("../img/deco/sparkles.webp");
+  --ic-heart-sun:  url("../img/deco/heart-sun.webp");
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--white);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { display: block; max-width: 100%; height: auto; }
+
+a { color: inherit; }
+
+h1, h2, h3, h4 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+}
+
+p { margin: 0; }
+
+:focus-visible {
+  outline: 3px solid var(--marigold);
+  outline-offset: 3px;
+}
+
+.wrap {
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--navy);
+  color: #fff;
+  padding: 0.75rem 1.25rem;
+  z-index: 999;
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.8rem;
+}
+.skip:focus { left: 0; }
+
+/* ── Type utilities ─────────────────────────────── */
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: clamp(0.7rem, 1.4vw, 0.8rem);
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-weight: 500;
+  color: var(--red);
+  margin: 0 0 1rem;
+}
+.eyebrow--light { color: var(--marigold); }
+
+.display-xl { font-size: clamp(2.9rem, 9vw, 6rem); }
+.display-l  { font-size: clamp(2.1rem, 5.2vw, 3.6rem); }
+.display-m  { font-size: clamp(1.75rem, 3.6vw, 2.6rem); }
+
+.lede {
+  font-size: clamp(1.0625rem, 1.7vw, 1.25rem);
+  line-height: 1.62;
+  color: rgba(16, 19, 26, 0.82);
+  max-width: 58ch;
+}
+
+/* ── Buttons ────────────────────────────────────── */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  text-decoration: none;
+  padding: 1rem 1.7rem;
+  border: 3px solid var(--navy);
+  background: var(--white);
+  color: var(--navy);
+  box-shadow: 5px 5px 0 var(--navy);
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.btn:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 3px 3px 0 var(--navy);
+}
+.btn:active {
+  transform: translate(5px, 5px);
+  box-shadow: 0 0 0 var(--navy);
+}
+
+.btn--primary {
+  background: var(--red);
+  border-color: var(--navy);
+  color: #fff;
+}
+
+.btn--onDark {
+  background: transparent;
+  border-color: #fff;
+  color: #fff;
+  box-shadow: 5px 5px 0 rgba(255, 255, 255, 0.55);
+}
+.btn--onDark:hover { box-shadow: 3px 3px 0 rgba(255, 255, 255, 0.55); }
+.btn--onDark:active { box-shadow: 0 0 0 rgba(255, 255, 255, 0); }
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.1rem;
+}
+
+/* Phone number shown inside the Order Ahead CTA */
+.cta-num {
+  white-space: nowrap;
+}
+.cta-num::before {
+  content: "·";
+  margin-inline: 0.55em 0.5em;
+  opacity: 0.65;
+}
+/* The header CTA shares a row with the brand and nav, so drop the number
+   before it can squeeze them. The nav's own button keeps it at every width. */
+@media (max-width: 1120px) {
+  .header-cta .cta-num { display: none; }
+}
+
+/* ── Tags ───────────────────────────────────────── */
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 500;
+  padding: 0.2rem 0.5rem;
+  border: 2px solid currentColor;
+  white-space: nowrap;
+  vertical-align: 0.14em;
+}
+.tag--veg { color: #3A6B5F; }
+.tag--fav { color: var(--red); }
+.tag--gf  { color: var(--grape); }
+.tag--new { color: var(--ink); background: var(--marigold); border-color: var(--marigold); }
+
+/* ── Header ─────────────────────────────────────── */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  background: var(--white);
+  border-bottom: var(--line);
+}
+
+.header-bar {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  min-height: 84px;
+  padding-block: 0.7rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  text-decoration: none;
+  margin-right: auto;
+}
+.brand img { width: 54px; height: auto; }
+.brand-name {
+  display: block;
+  font-family: var(--display);
+  font-size: 1.35rem;
+  color: var(--navy);
+  line-height: 1;
+}
+.brand-sub {
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--red);
+  margin-top: 0.3rem;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 1.9rem;
+}
+.nav a {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  text-decoration: none;
+  color: var(--navy);
+  padding-block: 0.4rem;
+  border-bottom: 2px solid transparent;
+}
+.nav a:hover,
+.nav a[aria-current="page"] { border-bottom-color: var(--red); }
+
+.nav .btn { display: none; }
+.nav .btn:hover { border-bottom-color: var(--navy); }
+
+.header-cta { padding: 0.8rem 1.3rem; }
+
+.nav-toggle {
+  display: none;
+  width: 46px;
+  height: 46px;
+  border: var(--line);
+  background: var(--white);
+  cursor: pointer;
+  padding: 0;
+  position: relative;
+}
+.nav-toggle span,
+.nav-toggle span::before,
+.nav-toggle span::after {
+  position: absolute;
+  left: 50%;
+  width: 20px;
+  height: 3px;
+  background: var(--navy);
+  transform: translateX(-50%);
+  content: "";
+}
+.nav-toggle span { top: 50%; margin-top: -1.5px; }
+.nav-toggle span::before { top: -7px; left: 0; transform: none; }
+.nav-toggle span::after  { top: 7px;  left: 0; transform: none; }
+
+@media (max-width: 860px) {
+  .nav-toggle { display: block; order: 3; }
+  .header-cta { display: none; }
+  .nav {
+    position: fixed;
+    inset: 87px 0 auto;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background: var(--white);
+    border-bottom: var(--line);
+    padding: 0.5rem var(--gutter) 1.6rem;
+    transform: translateY(-130%);
+    /* visibility, not just transform: a panel that is only moved off-screen
+       still hands its links to the keyboard, so they sat at tab positions 2-7
+       while invisible. visibility flips to visible instantly on open and only
+       after the slide finishes on close, so the animation still reads. */
+    visibility: hidden;
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.28s;
+    max-height: calc(100vh - 87px);
+    overflow-y: auto;
+  }
+  .nav[data-open="true"] { transform: translateY(0); visibility: visible; }
+  .nav a {
+    padding: 1rem 0;
+    border-bottom: var(--hair);
+    font-size: 0.9rem;
+  }
+  .nav .btn {
+    display: inline-flex;
+    margin-top: 1.4rem;
+    border-bottom: 3px solid var(--navy);
+  }
+}
+
+/* ── Marquee ribbon ─────────────────────────────── */
+
+.ribbon {
+  background: var(--red);
+  border-block: 3px solid var(--ink);
+  overflow: hidden;
+  padding-block: 0.72rem;
+}
+
+.ribbon-track {
+  display: flex;
+  width: max-content;
+  animation: slide 34s linear infinite;
+}
+
+.ribbon-track span {
+  font-family: var(--display);
+  font-size: clamp(1.05rem, 2.2vw, 1.55rem);
+  color: #fff;
+  padding-inline: 1.4rem;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 1.4rem;
+}
+.ribbon-track span::after {
+  content: "";
+  width: 9px;
+  height: 9px;
+  background: var(--marigold);
+  border-radius: 50%;
+  flex: none;
+}
+
+@keyframes slide {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.ribbon--thin { padding-block: 0.45rem; }
+.ribbon--thin .ribbon-track span { font-size: clamp(0.85rem, 1.6vw, 1.05rem); }
+
+/* Menu-name marquees carry ~3x the text of the tagline ones, so they need a
+   longer duration to hold the same ~50px/s scroll. The thin variant sets a
+   smaller font, so its track is shorter and its duration is shorter to match. */
+.ribbon--items .ribbon-track { animation-duration: 76s; }
+.ribbon--items.ribbon--thin .ribbon-track { animation-duration: 67s; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .ribbon-track { animation: none; }
+}
+
+/* ── Hero ───────────────────────────────────────── */
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  padding-block: clamp(3.25rem, 8vw, 6.5rem);
+  background: var(--navy);
+  overflow: hidden;
+  border-bottom: var(--line);
+}
+
+/* Storefront photo as the hero ground, with a navy overlay for legibility */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 46%;
+  z-index: -2;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(22, 41, 77, 0.88) 0%,
+    rgba(22, 41, 77, 0.8) 45%,
+    rgba(16, 19, 26, 0.9) 100%
+  );
+  z-index: -1;
+}
+
+.hero-inner {
+  max-width: 46rem;
+  margin-inline: auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-logo {
+  width: clamp(104px, 13vw, 152px);
+  height: auto;
+  background: var(--white);
+  border-radius: 50%;
+  padding: 6px;
+  margin-bottom: 1.6rem;
+}
+
+/* The h1 is the business name, set at eyebrow scale above the tagline */
+.hero h1.eyebrow {
+  line-height: 1.4;
+  margin-bottom: 1rem;
+}
+
+.hero-tagline {
+  font-family: var(--display);
+  line-height: 1.02;
+  letter-spacing: -0.005em;
+  margin-bottom: 1.4rem;
+  color: var(--white);
+}
+.hero-tagline em {
+  font-style: normal;
+  color: var(--marigold);
+}
+.hero .lede { color: rgba(255, 255, 255, 0.88); }
+/* Marigold clears 4.5:1 on solid navy but not over the photo at this size */
+.hero .eyebrow--light { color: var(--white); }
+
+.hero-hours {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1rem;
+  margin: 1.9rem 0 2.1rem;
+  padding: 0.95rem 1.15rem;
+  border: 3px solid var(--white);
+  background: rgba(255, 255, 255, 0.12);
+  width: fit-content;
+}
+.hero-hours .dot {
+  width: 10px;
+  height: 10px;
+  background: var(--marigold);
+  border-radius: 50%;
+  flex: none;
+}
+.hero-hours strong {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 500;
+  color: var(--white);
+}
+
+/* The navy keyline and shadow would vanish against the dark hero */
+.hero .btn--primary {
+  border-color: var(--white);
+  box-shadow: 5px 5px 0 rgba(16, 19, 26, 0.6);
+}
+.hero .btn--primary:hover { box-shadow: 3px 3px 0 rgba(16, 19, 26, 0.6); }
+.hero .btn--primary:active { box-shadow: 0 0 0 rgba(16, 19, 26, 0); }
+
+@media (max-width: 900px) {
+  .hero .btn-row { justify-content: center; }
+  .hero .lede { margin-inline: auto; }
+}
+
+/* ── Sections ───────────────────────────────────── */
+
+.section { padding-block: var(--stack); }
+.section--navy {
+  background: var(--navy);
+  color: rgba(255, 255, 255, 0.86);
+}
+.section--navy h2,
+.section--navy h3 { color: #fff; }
+.section--navy .lede { color: rgba(255, 255, 255, 0.78); }
+
+.section-head { margin-bottom: clamp(2.2rem, 4vw, 3.2rem); }
+.section-head h2 { margin-bottom: 1rem; }
+
+/* ── Decorative icon layer ──────────────────────── */
+
+/* Brand line art dropped into the empty margins of a band. Each .deco is an
+   empty aria-hidden span, and pointer-events:none here, so it never lands in
+   the tab order and never swallows a click on the content nearby.
+   .deco-host clips the art at the band's edge — that is what lets a piece
+   bleed off the side instead of forcing a horizontal scrollbar. */
+.deco-host {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  overflow: clip;
+}
+
+/* Lifts real content above the ornament layer once, here, so no individual
+   card, heading or link needs a z-index of its own. */
+.deco-host > .wrap {
+  position: relative;
+  z-index: 1;
+}
+
+/* Painted as a background rather than an <img> on purpose: a browser skips
+   fetching the background of a display:none element, so the phone breakpoint
+   below costs mobile nothing. A lazy <img> is still downloaded when hidden. */
+.deco {
+  position: absolute;
+  z-index: 0;
+  width: var(--dw);
+  aspect-ratio: var(--dar, 1);
+  background: var(--dimg) center / contain no-repeat;
+  opacity: var(--do, 0.2);
+  transform: rotate(var(--dr, 0deg));
+  pointer-events: none;
+}
+
+/* One line per placement. Everything sits in the outer margins the layout
+   already leaves empty, so nothing here moves or resizes a single existing
+   element. Opacities run higher on navy, where only the cream and marigold in
+   the art carry, and lower on white, where the black keylines would otherwise
+   compete with body copy. */
+
+/* Home · hero */
+.deco--hero-l    { --dimg: var(--ic-spark-navy); --dar: 200/120; left: 4%;  top: 17%;    --dw: clamp(52px, 5vw, 74px);   --do: 0.42; --dr: -10deg; }
+.deco--hero-r    { --dimg: var(--ic-spark-navy); --dar: 200/120; right: 5%; bottom: 22%; --dw: clamp(46px, 4.5vw, 64px); --do: 0.36; --dr: 172deg; }
+.deco--hero-sun  { --dimg: var(--ic-sunburst);   --dar: 200/121; left: 7%;  bottom: 12%; --dw: clamp(58px, 6vw, 86px);   --do: 0.3;  --dr: -8deg; }
+
+/* Home · what we do. The -head piece sits in the gap to the right of a two-line
+   headline — the widest patch of empty page on the site. */
+.deco--why-peace { --dimg: var(--ic-peace);    left: 8px;  bottom: 8%; --dw: clamp(58px, 6vw, 84px);   --do: 0.16; --dr: -12deg; }
+.deco--why-spark { --dimg: var(--ic-sparkles); --dar: 175/200; right: 8px; top: 31%; --dw: clamp(44px, 4.5vw, 62px); --do: 0.26; --dr: 8deg; }
+.deco--why-head  { --dimg: var(--ic-sandwich); right: 7%; top: 9%;    --dw: clamp(52px, 5.5vw, 78px); --do: 0.18; --dr: 6deg; }
+
+/* Home · our story */
+.deco--story-flowers { --dimg: var(--ic-flowers);   --dar: 137/200; right: 8px; bottom: 6%; --dw: clamp(50px, 5vw, 74px);   --do: 0.2;  --dr: 6deg; }
+.deco--story-heart   { --dimg: var(--ic-heart-sun); --dar: 200/158; left: 8px;  top: 9%;    --dw: clamp(46px, 4.5vw, 66px); --do: 0.24; --dr: -8deg; }
+
+/* Home · reviews */
+.deco--rev-sun   { --dimg: var(--ic-sunburst); --dar: 200/121; left: 8px;  bottom: 6%; --dw: clamp(56px, 5.5vw, 82px); --do: 0.2;  --dr: -4deg; }
+.deco--rev-spark { --dimg: var(--ic-sparkles); --dar: 175/200; right: 8px; top: 22%;   --dw: clamp(44px, 4.5vw, 62px); --do: 0.26; --dr: -14deg; }
+.deco--rev-head  { --dimg: var(--ic-flower);   --dar: 194/200; right: 8%; top: 4%;    --dw: clamp(50px, 5vw, 72px);   --do: 0.18; }
+
+/* Home · find us */
+.deco--find-flowers { --dimg: var(--ic-flowers);   --dar: 137/200; left: 8px;  top: 30%;   --dw: clamp(50px, 5vw, 72px);   --do: 0.2;  --dr: -10deg; }
+.deco--find-heart   { --dimg: var(--ic-heart-sun); --dar: 200/158; right: 8px; bottom: 7%; --dw: clamp(46px, 4.5vw, 66px); --do: 0.24; --dr: 12deg; }
+.deco--find-head    { --dimg: var(--ic-cape-sun);  --dar: 198/200; right: 8%; top: 4%;    --dw: clamp(52px, 5.5vw, 78px); --do: 0.18; --dr: -5deg; }
+
+/* Navy bands, both pages */
+.deco--navy-sun   { --dimg: var(--ic-cape-sun);   --dar: 198/200; left: 8px;  top: 16%;    --dw: clamp(54px, 5.5vw, 78px); --do: 0.3; --dr: -6deg; }
+.deco--navy-spark { --dimg: var(--ic-spark-navy); --dar: 200/120; right: 8px; bottom: 14%; --dw: clamp(50px, 5vw, 72px);   --do: 0.4; --dr: 10deg; }
+
+/* Footer, both pages */
+.deco--foot-llama { --dimg: var(--ic-llama); --dar: 153/200; right: 8px; bottom: 16%; --dw: clamp(46px, 4.5vw, 66px); --do: 0.26; }
+
+/* Menu · hero */
+.deco--mh-l { --dimg: var(--ic-sparkles);  --dar: 175/200; left: 7%;  top: 26%; --dw: clamp(44px, 4.5vw, 62px); --do: 0.26; --dr: -12deg; }
+.deco--mh-r { --dimg: var(--ic-heart-sun); --dar: 200/158; right: 7%; top: 30%; --dw: clamp(48px, 5vw, 68px);   --do: 0.24; --dr: 10deg; }
+
+/* Menu · the short sections, where a two-column list leaves the page half empty */
+.deco--m-pancakes { --dimg: var(--ic-sunburst); --dar: 200/121; right: 8px; bottom: 14%; --dw: clamp(56px, 5.5vw, 80px); --do: 0.2; }
+.deco--m-club     { --dimg: var(--ic-flowers);  --dar: 137/200; right: 8px; top: 30%;    --dw: clamp(50px, 5vw, 72px);   --do: 0.2;  --dr: 8deg; }
+.deco--m-wraps    { --dimg: var(--ic-peace);    right: 8px; bottom: 16%; --dw: clamp(54px, 5.5vw, 78px); --do: 0.16; --dr: -10deg; }
+.deco--m-quesa    { --dimg: var(--ic-sparkles); --dar: 175/200; right: 8px; top: 30%;    --dw: clamp(44px, 4.5vw, 62px); --do: 0.26; }
+
+/* An ornament that sits in the flow instead of a margin, for filling the gap
+   left beside a short button. Dropped on narrow screens, where the button takes
+   the full row and there is no gap to fill. */
+.deco-inline {
+  flex: none;
+  width: clamp(44px, 5vw, 62px);
+  aspect-ratio: var(--dar, 1);
+  background: var(--dimg) center / contain no-repeat;
+  opacity: var(--do, 0.3);
+}
+.deco-inline--flower { --dimg: var(--ic-flower); --dar: 194/200; --do: 0.32; }
+
+@media (max-width: 620px) {
+  .deco-inline { display: none; }
+}
+
+/* Two kinds of empty space, two rules.
+
+   Plain .deco sits in slack the layout leaves *inside* the content box — the
+   centred hero column, the gap right of a two-line heading. That slack is
+   proportional, so these hold up down to the tablet breakpoint.
+
+   .deco--edge sits beside a full-width column, where the only free space is the
+   strip outside the content box. That strip is ~38px at 950px and ~158px at
+   1440px, so these are pinned flush to the outer edge, capped to the strip, and
+   dropped once it is too thin to hold them. Without this they land on a card
+   link or a price. The 8px anchor plus the 16px taken off the cap leaves the
+   column 8px of clearance at every width. */
+.deco--edge { width: min(var(--dw), max(0px, calc(var(--strip) - 16px))); }
+
+@media (max-width: 1279px) {
+  .deco--edge { display: none; }
+}
+
+/* Below the tablet breakpoint no ornament has anywhere to go. display:none on
+   a background box also means the art is never fetched, so mobile pays
+   nothing — a lazy <img> would still have downloaded it. */
+@media (max-width: 900px) {
+  .deco { display: none; }
+}
+
+/* ── Three-up cards ─────────────────────────────── */
+
+.three-up {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(1.25rem, 2.4vw, 2rem);
+}
+
+.card {
+  border: var(--line);
+  background: var(--white);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.card-figure {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-bottom: var(--line);
+  background: var(--white);
+}
+.card-figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.2, 0, 0.2, 1);
+}
+.card:hover .card-figure img { transform: scale(1.045); }
+
+.card-body {
+  padding: clamp(1.35rem, 2.3vw, 1.85rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  flex: 1;
+}
+.card-body h3 { font-size: clamp(1.45rem, 2.3vw, 1.85rem); }
+.card-body p {
+  color: rgba(16, 19, 26, 0.78);
+  font-size: 1rem;
+}
+.card-link {
+  margin-top: auto;
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--red);
+  text-decoration: none;
+  border-bottom: 2px solid var(--red);
+  align-self: flex-start;
+  padding-bottom: 2px;
+}
+.card-link { padding-bottom: 5px; }
+.card-link:hover { color: var(--navy); border-color: var(--navy); }
+
+@media (max-width: 880px) {
+  .three-up { grid-template-columns: 1fr; }
+  .card-figure { aspect-ratio: 16 / 9; }
+}
+
+/* ── Story band ─────────────────────────────────── */
+
+.story {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: stretch;
+}
+.story-figure {
+  border: var(--line);
+  overflow: hidden;
+  min-height: 100%;
+}
+.story-figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.story-text > * + * { margin-top: 1.3rem; }
+
+.story-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.6rem 2.6rem;
+  margin-top: 2.2rem;
+  padding-top: 1.8rem;
+  border-top: var(--line);
+}
+.story-stats div span {
+  display: block;
+  font-family: var(--display);
+  font-size: clamp(1.7rem, 3vw, 2.3rem);
+  color: var(--red);
+  line-height: 1;
+}
+.story-stats div small {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: rgba(16, 19, 26, 0.6);
+  display: block;
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 900px) {
+  .story { grid-template-columns: 1fr; }
+}
+
+/* ── Photo strip ────────────────────────────────── */
+
+.strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3px;
+  background: var(--navy);
+  border-block: var(--line);
+}
+.strip img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+@media (max-width: 700px) {
+  .strip { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ── Menu teaser ────────────────────────────────── */
+
+.teaser {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+}
+
+.teaser-list {
+  border: 3px solid #fff;
+  padding: clamp(1.5rem, 3vw, 2.4rem);
+}
+.teaser-list h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1.4rem;
+  padding-bottom: 1rem;
+  border-bottom: 3px solid rgba(255, 255, 255, 0.35);
+}
+
+@media (max-width: 900px) {
+  .teaser { grid-template-columns: 1fr; }
+}
+
+/* ── Menu rows (leader dots) ────────────────────── */
+
+.menu-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 0.4rem;
+  padding-block: 0.75rem;
+}
+.menu-row + .menu-row { border-top: var(--hair); }
+
+.menu-row-name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.45rem;
+  font-weight: 600;
+  font-size: 1.02rem;
+  color: var(--navy);
+  position: relative;
+}
+.menu-row-name::after {
+  content: "";
+  flex: 1;
+  min-width: 1.5rem;
+  border-bottom: 2px dotted rgba(22, 41, 77, 0.38);
+  transform: translateY(-0.28em);
+}
+.menu-row-price {
+  font-family: var(--display);
+  font-size: 1.2rem;
+  color: var(--red);
+  line-height: 1;
+}
+.menu-row-desc {
+  grid-column: 1 / -1;
+  font-size: 0.94rem;
+  line-height: 1.5;
+  color: rgba(16, 19, 26, 0.66);
+  margin-top: 0.2rem;
+  max-width: 54ch;
+}
+
+.teaser .menu-row-name { color: #fff; }
+.teaser .menu-row-name::after { border-bottom-color: rgba(255, 255, 255, 0.4); }
+.teaser .menu-row-price { color: var(--marigold); }
+.teaser .menu-row + .menu-row { border-top-color: rgba(255, 255, 255, 0.22); }
+
+/* ── Find us ────────────────────────────────────── */
+
+.find {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 4vw, 3.5rem);
+}
+
+.info-block {
+  border: var(--line);
+  background: var(--white);
+  padding: clamp(1.5rem, 3vw, 2.2rem);
+}
+.find .info-block + .info-block { margin-top: 1.5rem; }
+.info-block h3 {
+  font-size: 1.35rem;
+  margin-bottom: 1.1rem;
+}
+
+.hours-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.hours-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 0.6rem;
+  font-size: 0.97rem;
+}
+.hours-list li + li { border-top: var(--hair); }
+.hours-list span:first-child { font-weight: 600; color: var(--navy); }
+.hours-list span:last-child {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  color: rgba(16, 19, 26, 0.72);
+}
+
+.contact-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  padding-block: 0.85rem;
+}
+.contact-line + .contact-line { border-top: var(--hair); }
+.contact-line .k {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--red);
+  width: 84px;
+  flex: none;
+  padding-top: 0.28rem;
+}
+.contact-line .v { font-size: 1.02rem; color: var(--navy); font-weight: 600; }
+/* inline-block + padding lifts these from 19px to ~28px tall for the WCAG 2.2
+   target minimum, without disturbing the label/value alignment */
+.contact-line a {
+  display: inline-block;
+  padding-block: 0.2rem;
+  text-decoration: none;
+  border-bottom: 2px solid rgba(22, 41, 77, 0.25);
+}
+.contact-line a:hover { border-bottom-color: var(--red); }
+
+.facts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem 1.2rem;
+}
+.facts li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  font-size: 0.95rem;
+  color: rgba(16, 19, 26, 0.78);
+}
+.facts li::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  background: var(--seaglass);
+  border-radius: 50%;
+  flex: none;
+}
+
+.map-frame {
+  width: 100%;
+  border: var(--line);
+  aspect-ratio: 4 / 3;
+}
+.map-frame iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  filter: saturate(0.8);
+}
+
+@media (max-width: 900px) {
+  .find { grid-template-columns: 1fr; }
+}
+
+/* ── Instagram gallery ──────────────────────────── */
+
+.ig-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1.2rem 2rem;
+  padding-bottom: clamp(1.5rem, 3vw, 2.2rem);
+  padding-top: var(--stack);
+}
+.ig-head .eyebrow { margin-bottom: 0.5rem; }
+
+.ig-gallery {
+  overflow: hidden;
+  border-block: var(--line);
+  background: var(--navy);
+}
+/* Duration tracks the tile count so the drift stays at the same ~39px/s it ran
+   at with 7 tiles: 58s x 13/7 = 108s. Add or remove a photo and this needs
+   rescaling by the same ratio, or the belt visibly speeds up. */
+.ig-track {
+  display: flex;
+  width: max-content;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  animation: slide 108s linear infinite;
+}
+/* margin-right on every tile (not gap) keeps the two halves exactly equal,
+   so the -50% translate lands on a seam-free loop point. */
+.ig-track > li {
+  flex: none;
+  width: clamp(190px, 23vw, 320px);
+  margin-right: 3px;
+}
+.ig-track img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+.ig-gallery:hover .ig-track,
+.ig-gallery:focus-within .ig-track { animation-play-state: paused; }
+
+@media (prefers-reduced-motion: reduce) {
+  /* stop the drift, but let people pan through the row by hand */
+  .ig-track { animation: none; }
+  .ig-gallery { overflow-x: auto; }
+}
+
+/* ── Reviews ────────────────────────────────────── */
+
+/* stretch, not start: the mentions panel and the quote carousel are meant to
+   read as a matched pair, so both columns take the height of the taller one.
+   The carousel already grows into it via .rv-viewport { flex: 1 }. */
+/* stretch, not start: the mentions panel and the quote carousel are meant to
+   read as a matched pair, so both columns take the height of the taller one.
+   The carousel already grows into it via .rv-viewport { flex: 1 }. */
+.reviews {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  align-items: stretch;
+}
+
+/* The chip list sets this column's height and three of the five reviews are one
+   liners, so the quote frame keeps ~100px spare above and below its content.
+   Two ornaments occupy those bands instead of leaving them blank. Both are
+   pinned to the frame rather than the track, so they hold still while the slides
+   move past, and both clear the tallest slide's text. */
+.deco-quote {
+  position: absolute;
+  z-index: -1;
+  background: var(--dimg) center / contain no-repeat;
+  opacity: var(--do, 0.2);
+  pointer-events: none;
+}
+.deco-quote--tl {
+  --dimg: var(--ic-sparkles);
+  --do: 0.22;
+  left: 22px;
+  top: 16px;
+  width: clamp(38px, 4vw, 54px);
+  aspect-ratio: 175/200;
+}
+.deco-quote--br {
+  --dimg: var(--ic-sunburst);
+  right: 20px;
+  bottom: 18px;
+  width: clamp(50px, 6vw, 78px);
+  aspect-ratio: 200/121;
+}
+
+@media (max-width: 620px) {
+  .deco-quote { display: none; }
+}
+
+/* A column, so .rating-foot can take the slack with margin-top:auto and pin the
+   button to the bottom edge instead of leaving a gap under it. */
+.rating-card {
+  border: var(--line);
+  background: var(--white);
+  padding: clamp(1.6rem, 3vw, 2.3rem);
+  display: flex;
+  flex-direction: column;
+}
+
+.mentions-title {
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  margin-bottom: 0.9rem;
+}
+.mentions-intro {
+  font-size: 0.97rem;
+  color: rgba(16, 19, 26, 0.7);
+}
+
+/* Chips rather than eight full-width rows: the same information in roughly half
+   the height, which keeps this card near the carousel's natural size instead of
+   stretching it into a tall empty box. */
+.mention-list {
+  list-style: none;
+  margin: 1.3rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.mention-list li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 2px solid var(--navy);
+  padding: 0.38rem 0.62rem;
+  font-size: 0.86rem;
+  color: var(--navy);
+}
+.mention-list li span {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  background: var(--marigold);
+  color: var(--ink);
+  padding: 0.1rem 0.4rem;
+}
+
+/* margin-top:auto absorbs whatever height the carousel forces on this column,
+   so the leftover space lands here rather than as a dead band mid-card. */
+.rating-foot {
+  margin-top: auto;
+  padding-top: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+/* No aggregate score anywhere in this section. Stars are left to the individual
+   quotes in the carousel, where every one of them is a five. */
+.star { width: 22px; height: 22px; fill: var(--marigold); flex: none; }
+
+/* Review carousel */
+/* min-width:0 is load-bearing: the flex track's min-content width is 5 slides
+   wide, and a 1fr grid column would otherwise stretch to fit it. */
+.rv-carousel { display: flex; flex-direction: column; min-width: 0; }
+.reviews > * { min-width: 0; }
+/* relative + isolate so .deco-quote anchors here and its negative z-index stays
+   inside this frame, above the white ground but under the review text. */
+.rv-viewport {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: var(--line);
+  background: var(--white);
+  flex: 1;
+}
+/* height:100% so the track, and therefore each slide, fills the stretched
+   viewport. Without it the slides keep their content height and the leftover
+   sits as dead space along the bottom of the frame. */
+.rv-track {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  height: 100%;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+/* Centred, not top-aligned: the viewport is stretched to match the mentions
+   card, so a two-line review would otherwise leave a void under it. Centring
+   splits that slack above and below, where it reads as generous padding. */
+.rv-slide {
+  flex: 0 0 100%;
+  padding: clamp(1.6rem, 3vw, 2.4rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.1rem;
+}
+.rv-stars { display: flex; gap: 0.2rem; }
+/* Set larger than body copy: it reads as a pull quote, and the extra line height
+   takes up slack the mentions card would otherwise leave empty in this frame. */
+.rv-slide blockquote {
+  margin: 0;
+  font-size: clamp(1.1rem, 1.95vw, 1.45rem);
+  line-height: 1.55;
+  color: var(--ink);
+}
+.rv-slide blockquote::before { content: "“"; }
+.rv-slide blockquote::after  { content: "”"; }
+.rv-slide footer { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem 0.7rem; }
+.rv-slide cite {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--navy);
+}
+.rv-slide footer span {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  color: rgba(16, 19, 26, 0.55);
+}
+
+.rv-controls { display: flex; align-items: center; gap: 0.9rem; margin-top: 1.1rem; }
+.rv-arrow {
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border: 3px solid var(--navy);
+  background: var(--white);
+  color: var(--navy);
+  font-size: 1rem;
+  cursor: pointer;
+  line-height: 1;
+}
+.rv-arrow:hover { background: var(--navy); color: #fff; }
+/* The dot stays 12px but the button is 24px so it clears the WCAG 2.2 minimum
+   target size. The visible mark is drawn by ::before. */
+.rv-dots { display: flex; gap: 0.15rem; margin-inline: auto; }
+.rv-dots button {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+.rv-dots button::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--navy);
+}
+.rv-dots button[aria-current="true"]::before { background: var(--red); border-color: var(--red); }
+
+@media (prefers-reduced-motion: reduce) {
+  .rv-track { transition: none; }
+}
+
+/* Stacks at 1100px rather than 860: below that the chip column is narrow enough
+   that the list runs to six rows and drags the quote frame past 600px to match.
+   Full width, one under the other, and each box takes its own height. */
+@media (max-width: 1100px) {
+  .reviews { grid-template-columns: 1fr; align-items: start; }
+}
+
+/* ── Footer ─────────────────────────────────────── */
+
+.site-footer {
+  background: var(--navy);
+  color: rgba(255, 255, 255, 0.72);
+  padding-block: clamp(3rem, 6vw, 4.5rem) 2rem;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  padding-bottom: 2.75rem;
+  border-bottom: 3px solid rgba(255, 255, 255, 0.22);
+}
+.site-footer h3 {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--marigold);
+  font-weight: 500;
+  margin-bottom: 1.1rem;
+}
+.footer-brand img {
+  width: 96px;
+  margin-bottom: 1.2rem;
+  background: #fff;
+  border-radius: 50%;
+}
+.footer-brand p { font-size: 0.97rem; max-width: 34ch; }
+.footer-list { list-style: none; margin: 0; padding: 0; }
+.footer-list li + li { margin-top: 0.25rem; }
+/* inline-block + vertical padding takes these from 18px to ~30px tall, which
+   clears the WCAG 2.2 target minimum without changing the visual rhythm much */
+.footer-list a {
+  display: inline-block;
+  padding-block: 0.35rem;
+  text-decoration: none;
+  font-size: 0.97rem;
+  border-bottom: 1px solid transparent;
+}
+.footer-list a:hover { color: #fff; border-bottom-color: var(--marigold); }
+
+/* Icon-only social link. The 44px box is the touch target; the negative
+   margin pulls the 24px glyph back into line with the text links above. */
+.footer-list .social-item { margin-top: 0.15rem; }
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-left: -10px;
+  border-bottom: 0;
+}
+.social-link svg {
+  display: block;
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+.footer-list .social-link:hover {
+  color: #fff;
+  border-bottom-color: transparent;
+}
+
+.footer-base {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1.75rem;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+@media (max-width: 800px) {
+  .footer-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Menu page ──────────────────────────────────── */
+
+.menu-hero {
+  padding-block: clamp(2.5rem, 5vw, 4rem);
+  text-align: center;
+  background: var(--white);
+}
+.menu-hero .lede { margin-inline: auto; }
+
+.menu-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.7rem 1.4rem;
+  margin-top: 2rem;
+}
+
+/* 87px, not 84: the header is 84px of content plus its 3px bottom border, so a
+   84px offset tucked this bar's own top border underneath it. */
+.catnav {
+  position: sticky;
+  top: 87px;
+  z-index: 50;
+  background: var(--navy);
+  border-block: 3px solid var(--ink);
+}
+.catnav-scroll {
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.catnav-scroll::-webkit-scrollbar { display: none; }
+.catnav a {
+  flex: none;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.72);
+  padding: 1rem 1.15rem;
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  transition: color 0.15s ease;
+}
+.catnav a:hover { color: #fff; }
+.catnav a.is-active {
+  color: #fff;
+  border-bottom-color: var(--marigold);
+}
+
+@media (max-width: 860px) {
+  .catnav { top: 87px; }
+}
+
+.menu-section { padding-block: clamp(2.75rem, 5vw, 4.25rem); scroll-margin-top: 150px; }
+
+.menu-section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.75rem 1.5rem;
+  margin-bottom: 0.6rem;
+}
+.menu-section-head h2 { font-size: clamp(1.9rem, 4vw, 3rem); }
+.menu-section-note {
+  font-size: 0.97rem;
+  color: rgba(16, 19, 26, 0.66);
+  margin-bottom: 2rem;
+  max-width: 62ch;
+}
+
+.menu-cols {
+  columns: 2;
+  column-gap: clamp(2rem, 5vw, 4rem);
+}
+.menu-cols > * { break-inside: avoid; }
+
+@media (max-width: 820px) {
+  .menu-cols { columns: 1; }
+}
+
+.menu-note-box {
+  border: var(--line);
+  background: var(--white);
+  padding: clamp(1.35rem, 2.5vw, 1.9rem);
+  margin-top: 2.5rem;
+}
+.menu-note-box p + p { margin-top: 0.7rem; }
+.menu-note-box p {
+  font-size: 0.9rem;
+  color: rgba(16, 19, 26, 0.72);
+  display: flex;
+  gap: 0.7rem;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+}
+@media (max-width: 820px) {
+  .grid-2 { grid-template-columns: 1fr; }
+}
