@@ -6,5 +6,11 @@ Allow: /
 
 # No admin, cart or search pages exist, so there is nothing to disallow.
 # Crawlers need the CSS, JS and images to render the page as a visitor sees it.
+# This also deliberately allows AI/LLM crawlers (GPTBot, ClaudeBot, PerplexityBot,
+# etc.) - being cited in AI answers works the same way as ranking in search:
+# it requires being crawlable, not blocked.
 
 Sitemap: https://www.peacemakerbrewster.com/sitemap.xml
+
+# AI agents: /llms.txt has a structured, human-and-machine-readable summary
+# of this site's pages and key facts.
