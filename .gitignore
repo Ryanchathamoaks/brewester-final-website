@@ -1,3 +1,12 @@
 .claude/
 .DS_Store
 Thumbs.db
+
+# Build artefacts for Cloudflare direct upload. Never commit these: with the
+# git integration Pages serves the repo root, so a committed zip would be
+# publicly downloadable and would ship the whole site inside itself.
+*.zip
+
+# A hand-made duplicate of this tree. Committing it would serve the site a
+# second time at /Cloudflare site/ and split every canonical.
+Cloudflare site/
