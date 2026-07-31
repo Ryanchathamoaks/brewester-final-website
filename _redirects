@@ -4,7 +4,7 @@
 # assets (`wrangler deploy`), which serves exactly one hostname per deployment
 # and only accepts relative paths here — it rejected the apex-to-www rule that
 # used to live in this file, because the source was an absolute URL
-# (https://peacemakerbrewster.com/*) and the parser doesn't support the "301!"
+# (https://thepeacemakerbrewster.com/*) and the parser doesn't support the "301!"
 # force suffix either.
 #
 # The apex->www canonicalisation still needs to happen, just one layer up: a

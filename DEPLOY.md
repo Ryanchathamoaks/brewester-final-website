@@ -19,16 +19,16 @@ That engine has two consequences this checklist accounts for:
 ## 1. Host canonicalisation (do this first)
 
 Every `<link rel="canonical">`, `og:url` and `sitemap.xml` entry points at
-**`https://www.peacemakerbrewster.com`**. The served host has to match, or Google
+**`https://www.thepeacemakerbrewster.com`**. The served host has to match, or Google
 sees two hosts serving identical pages and picks a canonical itself.
 
 1. **Workers & Pages → (this Worker) → Settings → Domains & Routes → Add
-   Custom Domain:** add **only** `www.peacemakerbrewster.com`. Adding a Custom
+   Custom Domain:** add **only** `www.thepeacemakerbrewster.com`. Adding a Custom
    Domain here provisions its DNS record automatically — no manual CNAME needed.
    Do not also add the apex here — that would serve the site on both hosts and
    create the exact duplication we are avoiding.
 
-2. The apex (`peacemakerbrewster.com`, no `www`) needs to resolve *through*
+2. The apex (`thepeacemakerbrewster.com`, no `www`) needs to resolve *through*
    Cloudflare's proxy for the redirect rule below to fire at all, but nothing
    should serve content from it directly. Add one DNS record for it:
    - `A  @  192.0.2.1` — proxied (orange cloud)
@@ -38,18 +38,18 @@ sees two hosts serving identical pages and picks a canonical itself.
    before it would ever reach that non-existent origin.
 
 3. **Rules → Redirect Rules → Create:**
-   - If: `hostname equals peacemakerbrewster.com`
+   - If: `hostname equals thepeacemakerbrewster.com`
    - Then: dynamic redirect, status **301**, preserve query string,
-     expression: `concat("https://www.peacemakerbrewster.com", http.request.uri.path)`
+     expression: `concat("https://www.thepeacemakerbrewster.com", http.request.uri.path)`
 
 4. **SSL/TLS:** encryption mode **Full (strict)**, and **Always Use HTTPS** on.
 
 ### Verify before announcing
 
 ```bash
-curl -sSI http://peacemakerbrewster.com/      | grep -i '^location'
-curl -sSI https://peacemakerbrewster.com/menu | grep -i '^location'
-curl -sSI https://www.peacemakerbrewster.com/ | grep -iE '^(HTTP|cache-control)'
+curl -sSI http://thepeacemakerbrewster.com/      | grep -i '^location'
+curl -sSI https://thepeacemakerbrewster.com/menu | grep -i '^location'
+curl -sSI https://www.thepeacemakerbrewster.com/ | grep -iE '^(HTTP|cache-control)'
 ```
 
 Expect a single 301 to the `www` https equivalent, path preserved, and `200` on
@@ -58,9 +58,9 @@ if you see one, fix it now rather than after indexing.
 
 ## 2. Search Console
 
-1. Verify the **`https://www.peacemakerbrewster.com`** property (the domain
+1. Verify the **`https://www.thepeacemakerbrewster.com`** property (the domain
    property covers both hosts, which is what you want).
-2. Submit `https://www.peacemakerbrewster.com/sitemap.xml`.
+2. Submit `https://www.thepeacemakerbrewster.com/sitemap.xml`.
 3. Request indexing for `/` and `/menu/`.
 4. Run both URLs through the Rich Results Test — expect
    `CafeOrCoffeeShop` on both, plus `Menu` and `BreadcrumbList` on `/menu/`.
@@ -70,7 +70,7 @@ if you see one, fix it now rather than after indexing.
 Local ranking is won here far more than on this site.
 
 - Hours **must** match the site exactly: daily 7:00am–2:00pm.
-- Website field → `https://www.peacemakerbrewster.com/`
+- Website field → `https://www.thepeacemakerbrewster.com/`
 - Primary category: Sandwich Shop or Breakfast Restaurant. Secondary: Coffee Shop.
 - Load the menu, current photos, and the attributes already claimed in our
   schema: outdoor seating, takeout, dine-in, free parking, wheelchair
