@@ -16,51 +16,58 @@ That engine has two consequences this checklist accounts for:
   without it, the upload log will show `.git/config` and similar going out as
   public files, which is a real information-disclosure risk, not a cosmetic one.
 
-## 1. Host canonicalisation (do this first)
+## 1. Host canonicalisation — DONE, apex is canonical
 
-Every `<link rel="canonical">`, `og:url` and `sitemap.xml` entry points at
-**`https://www.thepeacemakerbrewster.com`**. The served host has to match, or Google
-sees two hosts serving identical pages and picks a canonical itself.
+**The canonical host is the bare apex: `https://thepeacemakerbrewster.com`** (no
+`www`). Every `<link rel="canonical">`, `og:url`, JSON-LD `@id`, `sitemap.xml`
+entry and `robots.txt`/`llms.txt` reference uses it.
 
-1. **Workers & Pages → (this Worker) → Settings → Domains & Routes → Add
-   Custom Domain:** add **only** `www.thepeacemakerbrewster.com`. Adding a Custom
-   Domain here provisions its DNS record automatically — no manual CNAME needed.
-   Do not also add the apex here — that would serve the site on both hosts and
-   create the exact duplication we are avoiding.
+This was originally planned as www-canonical, and that was wrong in practice:
+the Worker's Custom Domain was attached to the apex, so `www` never got a DNS
+record and did not resolve at all (`curl` → "Could not resolve host"). Meanwhile
+every canonical pointed at that non-existent `www` host, which is exactly the
+kind of mismatch that stalls indexing. Rather than add DNS for a hostname
+nobody was using, the site was switched to match what actually serves.
 
-2. The apex (`thepeacemakerbrewster.com`, no `www`) needs to resolve *through*
-   Cloudflare's proxy for the redirect rule below to fire at all, but nothing
-   should serve content from it directly. Add one DNS record for it:
-   - `A  @  192.0.2.1` — proxied (orange cloud)
+Current state, verified live:
 
-   That address is a placeholder from the reserved range in RFC 5737. Nothing
-   listens on it; the redirect rule intercepts every request to this host
-   before it would ever reach that non-existent origin.
+- `https://thepeacemakerbrewster.com/` → `200`, serves the site
+- `www.thepeacemakerbrewster.com` → does not resolve (no DNS record)
 
-3. **Rules → Redirect Rules → Create:**
-   - If: `hostname equals thepeacemakerbrewster.com`
+### Optional hardening
+
+`www` not resolving is harmless — there is no duplicate-content risk, because
+nothing is served there. But visitors who type `www.` by habit get a DNS error
+rather than the site. To cover that:
+
+1. **DNS:** add `CNAME  www  thepeacemakerbrewster.com` — proxied (orange cloud).
+   Do **not** add `www` as a second Custom Domain on the Worker; that would serve
+   the site on both hosts and create the duplication we are avoiding.
+2. **Rules → Redirect Rules → Create:**
+   - If: `hostname equals www.thepeacemakerbrewster.com`
    - Then: dynamic redirect, status **301**, preserve query string,
-     expression: `concat("https://www.thepeacemakerbrewster.com", http.request.uri.path)`
+     expression: `concat("https://thepeacemakerbrewster.com", http.request.uri.path)`
 
-4. **SSL/TLS:** encryption mode **Full (strict)**, and **Always Use HTTPS** on.
+Note the direction: `www` → apex, the reverse of the original plan.
 
-### Verify before announcing
+3. **SSL/TLS:** encryption mode **Full (strict)**, and **Always Use HTTPS** on.
+
+### Verify
 
 ```bash
-curl -sSI http://thepeacemakerbrewster.com/      | grep -i '^location'
-curl -sSI https://thepeacemakerbrewster.com/menu | grep -i '^location'
-curl -sSI https://www.thepeacemakerbrewster.com/ | grep -iE '^(HTTP|cache-control)'
+curl -sSI https://thepeacemakerbrewster.com/ | grep -iE '^(HTTP|cache-control)'
+curl -sS https://thepeacemakerbrewster.com/ | grep -i 'rel="canonical"'
 ```
 
-Expect a single 301 to the `www` https equivalent, path preserved, and `200` on
-the canonical host. A redirect *chain* (two or more hops) leaks link equity —
-if you see one, fix it now rather than after indexing.
+Expect `200` on the apex and a canonical that matches the host being requested.
+If the `www` redirect above is added, also confirm it is a single 301 hop — a
+redirect *chain* leaks link equity.
 
 ## 2. Search Console
 
-1. Verify the **`https://www.thepeacemakerbrewster.com`** property (the domain
+1. Verify the **`https://thepeacemakerbrewster.com`** property (the domain
    property covers both hosts, which is what you want).
-2. Submit `https://www.thepeacemakerbrewster.com/sitemap.xml`.
+2. Submit `https://thepeacemakerbrewster.com/sitemap.xml`.
 3. Request indexing for `/` and `/menu/`.
 4. Run both URLs through the Rich Results Test — expect
    `CafeOrCoffeeShop` on both, plus `Menu` and `BreadcrumbList` on `/menu/`.
@@ -70,7 +77,7 @@ if you see one, fix it now rather than after indexing.
 Local ranking is won here far more than on this site.
 
 - Hours **must** match the site exactly: daily 7:00am–2:00pm.
-- Website field → `https://www.thepeacemakerbrewster.com/`
+- Website field → `https://thepeacemakerbrewster.com/`
 - Primary category: Sandwich Shop or Breakfast Restaurant. Secondary: Coffee Shop.
 - Load the menu, current photos, and the attributes already claimed in our
   schema: outdoor seating, takeout, dine-in, free parking, wheelchair
@@ -78,11 +85,10 @@ Local ranking is won here far more than on this site.
 
 ## Notes
 
-- **Check that `404.html` actually serves on a bad URL** (e.g.
-  `/this-does-not-exist`) once deployed, and that it returns HTTP 404, not 200.
-  Classic Pages auto-detects a root `404.html`; this Worker-assets engine may
-  need it declared explicitly via `not_found_handling: "404-page"` in a
-  `wrangler.jsonc` if it doesn't pick it up on its own. Untested until live.
+- **Verified live:** a bad URL returns HTTP `404` correctly, so this engine picks
+  up the root `404.html` on its own — no `not_found_handling` setting needed.
+- **Verified live:** `.assetsignore` works. `/.git/config` and `/DEPLOY.md` both
+  return `404`, and `/llms.txt` returns `200`. Git history is not exposed.
 - `.nojekyll` is a GitHub Pages artifact and a no-op here. Harmless; delete if
   you like.
 - `sitemap.xml` has hardcoded `lastmod` dates. Bump them when content changes —

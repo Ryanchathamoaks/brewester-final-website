@@ -15,11 +15,11 @@ The Peacemaker is a small, order-at-the-counter restaurant, not a chain. Sandwic
 
 ## Pages
 
-- [Home](https://www.thepeacemakerbrewster.com/): Overview, hours, location, story, and customer reviews.
-- [Menu](https://www.thepeacemakerbrewster.com/menu/): Full menu with prices - breakfast sandwiches, plates & sides, pancakes, subs, club sandwiches, salads, wraps, "Simple Simons," and quesadillas.
+- [Home](https://thepeacemakerbrewster.com/): Overview, hours, location, story, and customer reviews.
+- [Menu](https://thepeacemakerbrewster.com/menu/): Full menu with prices - breakfast sandwiches, plates & sides, pancakes, subs, club sandwiches, salads, wraps, "Simple Simons," and quesadillas.
 
 ## Optional
 
-- [Our story](https://www.thepeacemakerbrewster.com/#story)
-- [Reviews](https://www.thepeacemakerbrewster.com/#reviews)
-- [Find us / directions](https://www.thepeacemakerbrewster.com/#find)
+- [Our story](https://thepeacemakerbrewster.com/#story)
+- [Reviews](https://thepeacemakerbrewster.com/#reviews)
+- [Find us / directions](https://thepeacemakerbrewster.com/#find)

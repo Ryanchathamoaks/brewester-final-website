@@ -10,7 +10,7 @@ Allow: /
 # etc.) - being cited in AI answers works the same way as ranking in search:
 # it requires being crawlable, not blocked.
 
-Sitemap: https://www.thepeacemakerbrewster.com/sitemap.xml
+Sitemap: https://thepeacemakerbrewster.com/sitemap.xml
 
 # AI agents: /llms.txt has a structured, human-and-machine-readable summary
 # of this site's pages and key facts.

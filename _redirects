@@ -1,16 +1,17 @@
 # Redirects for this Worker's static assets.
 #
-# Deliberately empty of rules. This project deploys as a Worker with static
-# assets (`wrangler deploy`), which serves exactly one hostname per deployment
-# and only accepts relative paths here — it rejected the apex-to-www rule that
-# used to live in this file, because the source was an absolute URL
-# (https://thepeacemakerbrewster.com/*) and the parser doesn't support the "301!"
-# force suffix either.
+# Deliberately empty of rules.
 #
-# The apex->www canonicalisation still needs to happen, just one layer up: a
-# zone-level Redirect Rule (Cloudflare dashboard → Rules → Redirect Rules),
-# which runs before traffic ever reaches this Worker and works regardless of
-# what's behind it. See DEPLOY.md.
+# This project deploys as a Worker with static assets (`wrangler deploy`), which
+# serves exactly one hostname per deployment and only accepts relative paths
+# here. An earlier version of this file tried to do apex-to-www canonicalisation
+# and failed the build: the source was an absolute URL and the status carried a
+# Pages-style "301!" force suffix, neither of which this parser supports.
+#
+# It is moot now regardless. The canonical host is the bare apex
+# (https://thepeacemakerbrewster.com) and that is exactly what this Worker
+# serves, so there is no host-level hop to perform. If a www -> apex redirect is
+# ever wanted, it belongs in a zone-level Redirect Rule, not here; see DEPLOY.md.
 #
 # If a same-host, path-only redirect is ever needed (e.g. an old URL that
 # moved), the working syntax here is:
