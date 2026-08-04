@@ -1,4 +1,4 @@
-# Cloudflare Pages response headers
+# Response headers for this Worker's static assets.
 
 # Images are stable: if one is ever recut it gets a new name, so a long
 # immutable cache is safe here.
@@ -16,8 +16,29 @@
   Cache-Control: public, max-age=86400, must-revalidate
 
 # HTML must revalidate every time so menu and price changes go live at once.
-/*
+#
+# Listed one route at a time instead of on /* on purpose. This engine's parser
+# APPLIES EVERY MATCHING RULE and concatenates the values — it does not let the
+# most specific rule win the way classic Pages did. A Cache-Control on /* was
+# therefore leaking into every asset response as
+#
+#   Cache-Control: public, max-age=0, must-revalidate, public, max-age=31536000, immutable
+#
+# and the max-age=0 won, so the year-long image cache never applied and CSS/JS
+# revalidated on every hit. Keep Cache-Control off /* — add a route here when a
+# new HTML page is added.
+/
   Cache-Control: public, max-age=0, must-revalidate
+
+/menu/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/404
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Security headers apply everywhere. Safe on /* because duplicating an
+# identical value is harmless — unlike Cache-Control, nothing here conflicts.
+/*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   X-Frame-Options: SAMEORIGIN
