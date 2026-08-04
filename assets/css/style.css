@@ -606,6 +606,23 @@ p { margin: 0; }
 .deco--m-wraps    { --dimg: var(--ic-peace);    right: 8px; bottom: 16%; --dw: clamp(54px, 5.5vw, 78px); --do: 0.16; --dr: -10deg; }
 .deco--m-quesa    { --dimg: var(--ic-sparkles); --dar: 175/200; right: 8px; top: 30%;    --dw: clamp(44px, 4.5vw, 62px); --do: 0.26; }
 
+/* Menu · the long list sections, which had no ornament at all.
+   The four rules above all pin right, so these pin LEFT. Read down the page at
+   desktop width the nine sections now zigzag right, left, right, left … — the
+   sides alternate on purpose, so add a new one to the opposite side of whatever
+   section precedes it. Vertical anchors are staggered too (top/bottom, and no
+   two neighbours at the same percentage) so the run never reads as a column of
+   evenly spaced marks.
+   These carry the two pieces of art the menu page was not using: the peace
+   sandwich goes on the two sandwich sections, and the peace flower on the
+   salads. Same clamps and opacities as their siblings — 0.16 on the widest
+   piece, since a wide mark at full strength competes with the price column. */
+.deco--m-breakfast { --dimg: var(--ic-sandwich); right: 8px; top: 12%;    --dw: clamp(54px, 5.5vw, 78px); --do: 0.16; --dr: 6deg; }
+.deco--m-plates    { --dimg: var(--ic-heart-sun); --dar: 200/158; left: 8px; bottom: 18%; --dw: clamp(48px, 5vw, 68px); --do: 0.24; --dr: -9deg; }
+.deco--m-subs      { --dimg: var(--ic-sandwich); left: 8px;  top: 9%;     --dw: clamp(52px, 5.5vw, 76px); --do: 0.16; --dr: -7deg; }
+.deco--m-salads    { --dimg: var(--ic-flower);   --dar: 194/200; left: 8px; bottom: 12%; --dw: clamp(50px, 5vw, 72px); --do: 0.18; --dr: 8deg; }
+.deco--m-simons    { --dimg: var(--ic-sparkles); --dar: 175/200; left: 8px; top: 24%;    --dw: clamp(44px, 4.5vw, 62px); --do: 0.26; --dr: 14deg; }
+
 /* An ornament that sits in the flow instead of a margin, for filling the gap
    left beside a short button. Dropped on narrow screens, where the button takes
    the full row and there is no gap to fill. */
