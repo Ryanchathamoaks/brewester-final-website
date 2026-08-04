@@ -15,6 +15,12 @@ node_modules
 .gitattributes
 .assetsignore
 
+# The assets directory is the repo root, so the deploy config sits inside the
+# very tree being uploaded. Without this it would be fetchable at
+# /wrangler.jsonc.
+wrangler.jsonc
+.wrangler
+
 # Internal deploy notes. Not secret, but no reason to publish DNS/redirect
 # setup notes at /DEPLOY.md.
 DEPLOY.md

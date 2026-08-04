@@ -1,0 +1,22 @@
+{
+  // Deploy config for the static-asset Worker behind thepeacemakerbrewster.com.
+  //
+  // This file exists for exactly one setting: not_found_handling. Without it the
+  // engine defaults to "none", which answers every unmatched URL with a bare 404
+  // and an EMPTY BODY — correct status, blank white page for the visitor. The
+  // repo has always shipped a styled 404.html; it just was not wired up.
+  //
+  // "name" must keep matching the existing Worker, or a deploy would create a
+  // second Worker and leave the Custom Domain pointing at the old one.
+  "name": "brewester-final-website",
+  "compatibility_date": "2026-08-04",
+  "assets": {
+    // The site is served from the repo root: no build step, no output dir.
+    "directory": ".",
+    // Serve /404.html for unmatched paths. Keep this as "404-page", NOT
+    // "single-page-application" — SPA mode returns 200 + index.html for every
+    // missing URL, which is what previously had Google seeing unlimited
+    // duplicate soft-404 pages on this domain.
+    "not_found_handling": "404-page"
+  }
+}
