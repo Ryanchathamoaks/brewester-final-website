@@ -575,6 +575,16 @@ p { margin: 0; }
 .deco--why-spark { --dimg: var(--ic-sparkles); --dar: 175/200; right: 8px; top: 31%; --dw: clamp(44px, 4.5vw, 62px); --do: 0.26; --dr: 8deg; }
 .deco--why-head  { --dimg: var(--ic-sandwich); right: 7%; top: 9%;    --dw: clamp(52px, 5.5vw, 78px); --do: 0.18; --dr: 6deg; }
 
+/* Home · Instagram band — the one band on the page that carried no ornament.
+   ONLY the top 40% is usable here: the photo belt below the heading is
+   full-bleed, so anything anchored lower than that lands on the tiles instead
+   of in a margin. Both pieces are pinned into the heading row and kept short
+   enough to finish well above it — at 1425px the band is 543px and the belt
+   starts at 217px, so these end around 112px and 137px. If the heading ever
+   gains a line, re-check that clearance before nudging these down. */
+.deco--ig-l { --dimg: var(--ic-cape-sun); --dar: 198/200; left: 8px;  top: 7%;  --dw: clamp(50px, 5vw, 74px);   --do: 0.18; --dr: -7deg; }
+.deco--ig-r { --dimg: var(--ic-flower);   --dar: 194/200; right: 8px; top: 13%; --dw: clamp(46px, 4.5vw, 66px); --do: 0.18; --dr: 9deg; }
+
 /* Home · our story */
 .deco--story-flowers { --dimg: var(--ic-flowers);   --dar: 137/200; right: 8px; bottom: 6%; --dw: clamp(50px, 5vw, 74px);   --do: 0.2;  --dr: 6deg; }
 .deco--story-heart   { --dimg: var(--ic-heart-sun); --dar: 200/158; left: 8px;  top: 9%;    --dw: clamp(46px, 4.5vw, 66px); --do: 0.24; --dr: -8deg; }
@@ -593,8 +603,11 @@ p { margin: 0; }
 .deco--navy-sun   { --dimg: var(--ic-cape-sun);   --dar: 198/200; left: 8px;  top: 16%;    --dw: clamp(54px, 5.5vw, 78px); --do: 0.3; --dr: -6deg; }
 .deco--navy-spark { --dimg: var(--ic-spark-navy); --dar: 200/120; right: 8px; bottom: 14%; --dw: clamp(50px, 5vw, 72px);   --do: 0.4; --dr: 10deg; }
 
-/* Footer, both pages */
-.deco--foot-llama { --dimg: var(--ic-llama); --dar: 153/200; right: 8px; bottom: 16%; --dw: clamp(46px, 4.5vw, 66px); --do: 0.26; }
+/* Footer, both pages. The llama had the right strip to itself and the left sat
+   empty; the spark balances it. Opacity runs high, as on every navy band — only
+   the cream and marigold in the art carry against that background. */
+.deco--foot-llama { --dimg: var(--ic-llama);      --dar: 153/200; right: 8px; bottom: 16%; --dw: clamp(46px, 4.5vw, 66px); --do: 0.26; }
+.deco--foot-spark { --dimg: var(--ic-spark-navy); --dar: 200/120; left: 8px;  top: 22%;    --dw: clamp(48px, 5vw, 70px);   --do: 0.3; --dr: -8deg; }
 
 /* Menu · hero */
 .deco--mh-l { --dimg: var(--ic-sparkles);  --dar: 175/200; left: 7%;  top: 26%; --dw: clamp(44px, 4.5vw, 62px); --do: 0.26; --dr: -12deg; }
